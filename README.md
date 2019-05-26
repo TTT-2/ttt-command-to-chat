@@ -5,6 +5,8 @@ a small addon that makes it easy for server owners to configure chat commands
 - support of (color) variables with a `$` in front
 - support of placeholders like `%p` (player), `%t` (time), ...
 - localization
+- define prefix (default `!`)
+- print chat text or run command
 
 ## Future Features (Maybe)
 - ULX support for easy command management
