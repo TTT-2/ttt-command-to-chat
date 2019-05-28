@@ -2,8 +2,8 @@
 a small addon that makes it easy for server owners to configure chat commands
 
 ## Planned Features
-- support of (color) variables with a `$` in front
-- support of placeholders like `%p` (player), `%t` (time), ...
+- support of (color) variables with a `%` in front and at the end (double `%%` is used to escape them)
+- support of placeholders like `$p` (player), `$t` (time), ... (double `$$` is used to escape them)
 - localization
 - define prefix (default `!`)
 - print chat text or run command
