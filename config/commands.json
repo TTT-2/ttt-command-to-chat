@@ -5,7 +5,7 @@
     },
     "variables": {
         "strings": {
-
+            "servername": "TTT with Friends"
         },
         "colors": {
             "green": [0, 255, 0, 255]
@@ -15,12 +15,12 @@
         "Deutsch": {
             "ttt_ctc_help_line_1": "%green% Besuche github.com um mehr Informationen über dieses Addon zu bekommen.",
             "ttt_ctc_help_line_2": "Auflistung aller Befehle",
-            "ttt_ctc_info_data_print": "Du bist $p und es ist $t Uhr!"
+            "ttt_ctc_info_data_print": "Du bist $p und es ist $t Uhr, du spielst auf: {servername}!"
         },
         "English": {
             "ttt_ctc_help_line_1": "%green% Visit github.com for more infiormation about this addon.",
             "ttt_ctc_help_line_2": "List of all available commands",
-            "ttt_ctc_info_data_print": "You are $p and it is $t!"
+            "ttt_ctc_info_data_print": "You are $p and it is $t, you're playing on {servername}!"
         }
     },
     "commands": {
@@ -39,8 +39,9 @@
             ]
         },
         "multicommand": {
+            "localized": false,
             "chat": [
-                "ttt_ctc_run_multiple_commands"
+                "Running multiple commands!"
             ],
             "console": [
                 "xmenu",
