@@ -143,7 +143,7 @@ Most of the time you want to use localized strings. You have to set `localized` 
         "ttt_ctc_example_desc": "A neat example command.",
         "ttt_ctc_example_line_1": "%ctc_awesome%Awesome text line one!",
         "ttt_ctc_example_line_2": "And there's a second line here",
-        "ttt_ctc_example_line_3": "You are %ctc_white%$p$%ctc_default% and you're with {cooldudes}!"
+        "ttt_ctc_example_line_3": "You are %ctc_white%$p$%ctc_default% and you're playing with {cooldudes}!"
     },
     "Deutsch": {
         "ttt_ctc_example_desc": "Ein toller Beispielbefehl.",
