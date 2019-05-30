@@ -68,7 +68,7 @@ In order to use this color, it has to be defined first. This happens in the `var
 
 `ctc_awesome` is the color name followed by an array of the color values (r,g,b,a). There is no specific naming scheme for variables. But you have to make sure, that it is unique and no string that occurs in your regular text.
 
-There are two default colors `ctc_default` and `ctc_highlioght` that can be overwritten. However these two colors don't have to be overwritte to be used.
+There are two default colors `ctc_default` and `ctc_highlight` that can be overwritten. However these two colors don't have to be overwritte to be used.
 
 ## Adding Variables and Placeholders
 
@@ -77,7 +77,7 @@ In the next step, variables and placeholders are added. Variables are strings th
 ```json
 "variables": {
     "strings": {
-        "servername": "TTT with Friends"
+        "cooldudes": "friends"
     }
 }
 ```
@@ -91,13 +91,13 @@ After such a string variable is defined, it can be used inside multiple commands
         "chat": [
             "%ctc_awesome%Awesome text line one!",
             "And there's a second line here",
-            "You are %ctc_white%$p$%ctc_default% and you're playing on {servername}!"
+            "You are %ctc_white%$p$%ctc_default% and you're playing with {cooldudes}!"
         ]
     }
 }
 ```
 
-In the third line of this chat message tweo colors, a placeholer `$p$` and a variable `servername` is used. Right now there are three placeholders available: `$p$` (playername), `$t$` (current time) and `$d$` (current date).
+In the third line of this chat message tweo colors, a placeholer `$p$` and a variable `cooldudes` is used. Right now there are three placeholders available: `$p$` (playername), `$s$` (servername/hostname), `$t$` (current time) and `$d$` (current date).
 
 ## Description
 

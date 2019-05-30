@@ -136,6 +136,9 @@ if CLIENT then
                 if v == 'd' then
                     print_string_ex[k] = tostring(os.date("%d/%m/%Y" , os.time()))
                 end
+                if v == 's' then
+                    print_string_ex[k] = tostring(GetHostName())
+                end
 
                 -- concat
                 print_string = print_string .. print_string_ex[k]
