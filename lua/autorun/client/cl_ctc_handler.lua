@@ -6,6 +6,11 @@ if CLIENT then
         local data = net.ReadString()
         CTC = util.JSONToTable(data)
 
+        if CTC == nil then
+            Error('[CTC ERROR] Syntax of command file is not correct!')
+            return
+        end
+
         -- add to language
         for lang_id, lang_tbl in pairs(CTC.text) do
             for sub, lang in pairs(lang_tbl) do
@@ -15,19 +20,23 @@ if CLIENT then
 
         -- preprocess colors
         local found_default, found_highlight = false, false
-        for name, color_tbl in pairs(CTC.variables.colors) do
-            CTC.variables.colors[name] = Color(color_tbl[1] or 255, color_tbl[2] or 255, color_tbl[3] or 255, color_tbl[4] or 255)
+        if CTC.variables ~= nil and CTC.variables.colors ~= nil then
+            for name, color_tbl in pairs(CTC.variables.colors) do
+                CTC.variables.colors[name] = Color(color_tbl[1] or 255, color_tbl[2] or 255, color_tbl[3] or 255, color_tbl[4] or 255)
 
-            if name == 'default' then found_default = true end
-            if name == 'highlight' then found_highlight = true end
+                if name == 'ctc_default' then found_default = true end
+                if name == 'ctc_highlight' then found_highlight = true end
+            end
         end
 
         -- make sure the two default colors are always set
+        if CTC.variables == nil then CTC.variables = {} end
+        if CTC.variables.colors == nil then CTC.variables.colors = {} end
         if not found_default then
-            CTC.variables.colors['default'] = Color(151, 211, 255, 255)
+            CTC.variables.colors['ctc_default'] = Color(151, 211, 255, 255)
         end
         if not found_highlight then
-            CTC.variables.colors['highlight'] = Color(215, 240, 240, 255)
+            CTC.variables.colors['ctc_highlight'] = Color(215, 240, 240, 255)
         end
 
         -- register commands
@@ -45,25 +54,33 @@ if CLIENT then
 
             for name, command_tbl in pairs(CTC.commands) do
                 local translated = ''
-                if command_tbl.desc.localized == false then
-                    translated = command_tbl.desc.text
-                else
-                    translated = LANG.GetTranslation(command_tbl.desc.text)
+                if command_tbl.desc ~= nil and command_tbl.desc.text ~= nil then
+                    if command_tbl.desc.localized == false then
+                        translated = command_tbl.desc.text
+                    else
+                        translated = LANG.GetTranslation(command_tbl.desc.text)
+                    end
                 end
 
                 local line_tbl = {
-                    CTC.variables.colors['highlight'],
+                    CTC.variables.colors['ctc_highlight'],
                     CTC.settings.prefix .. name,
-                    CTC.variables.colors['default'],
+                    CTC.variables.colors['ctc_default'],
                     ': ' .. translated
                 }
                 
                 chat.AddText(unpack(line_tbl))
             end
         end)
+
+        -- make sure prefix is set
+        if CTC.settings == nil then CTC.settings = {} end
+        if CTC.settings.prefix == nil then CTC.settings.prefix = '!' end
     end)
 
     hook.Add('OnPlayerChat', 'CTC_Player_Chat', function(player, text, teamOnly, playerIsDead)
+        if CTC == nil then return end
+
         local prefix_len = CTC.settings.prefix:len()
 
         -- line starts not with prefix, therefore this is no command
@@ -75,19 +92,19 @@ if CLIENT then
         if CTC.commands[command] == nil then return end
 
         -- command is valid --> execute
-        chat.AddText(CTC.variables.colors['default'], '>> ', CTC.variables.colors['highlight'], text)
+        chat.AddText(CTC.variables.colors['ctc_default'], '>> ', CTC.variables.colors['ctc_highlight'], text)
         CTC_RunFirst(command)
 
         return true -- prevent issued command from beeing printed to chat
     end)
 
     function CTC_RunFirst(command)
-        if CTC.settings.run_first == 'chat' then
-            CTC_PrintChat(command)
+        if CTC.settings.run_first == 'console' then
             CTC_Run_Command(command)
+            CTC_PrintChat(command)
         else
-            CTC_Run_Command(command)
             CTC_PrintChat(command)
+            CTC_Run_Command(command)
         end
     end
 
@@ -102,7 +119,7 @@ if CLIENT then
             if CTC.commands[command].localized == false then
                 print_string = line
             else
-                print_string = LANG.GetParamTranslation(line, CTC.variables.strings)
+                print_string = LANG.GetParamTranslation(line, CTC.variables.strings or {})
             end
 
             -- replace special placeholders
