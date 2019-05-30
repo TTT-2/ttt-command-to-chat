@@ -143,13 +143,13 @@ Most of the time you want to use localized strings. You have to set `localized` 
         "ttt_ctc_example_desc": "A neat example command.",
         "ttt_ctc_example_line_1": "%ctc_awesome%Awesome text line one!",
         "ttt_ctc_example_line_2": "And there's a second line here",
-        "ttt_ctc_example_line_3": "You are %ctc_white%$p$%ctc_default% and you're playing on {servername}!"
+        "ttt_ctc_example_line_3": "You are %ctc_white%$p$%ctc_default% and you're with {cooldudes}!"
     },
     "Deutsch": {
         "ttt_ctc_example_desc": "Ein toller Beispielbefehl.",
         "ttt_ctc_example_line_1": "%ctc_awesome%Wunderbare Textzeile eins!",
         "ttt_ctc_example_line_2": "Und hier ist eine zweite Zeile",
-        "ttt_ctc_example_line_3": "Du bist %ctc_white%$p$%ctc_default% und du spielst auf {servername}!"
+        "ttt_ctc_example_line_3": "Du bist %ctc_white%$p$%ctc_default% und du spielst mit {cooldudes}!"
     }
 }
 ```
