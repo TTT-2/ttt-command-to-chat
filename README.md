@@ -2,6 +2,8 @@
 
 A small addon that makes it easy for server owners to configure chat commands. Each defined command registers a chat command and a console command. Once executed, chat messages can be printed to the player chat or further commands can be automatically executed. Additionally multiple languages, variables, placeholders and colors are supported.
 
+**Important note:** Make sure to use the right texteditor. After editing the json file with the windows text editor, garrys mod is unable to parse the json file. Using notepad++ solves this problem.
+
 ## Setup
 
 After installation of the addon, the GM server has to run once. A new folder will ve created in `garrysmmod/data` called `ctc`. Inside this folder is a file called `commands.txt`. This text file is a json structure which can be edited in order to create new custom commands.
