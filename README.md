@@ -57,10 +57,10 @@ In order to use this color, it has to be defined first. This happens in the `var
 "variables": {
     "colors": {
         "ctc_awesome": [
-            85.0,
-            150.0,
-            100.0,
-            255.0
+            85,
+            150,
+            100,
+            255
         ]
     }
 }
@@ -97,11 +97,11 @@ After such a string variable is defined, it can be used inside multiple commands
 }
 ```
 
-In the third line of this chat message a color, a placeholer `$p$` and a variable `servername` is used. Right now there are three placeholders: `$p$` (playername), `$t$` (current time) and `$d$` (current date).
+In the third line of this chat message tweo colors, a placeholer `$p$` and a variable `servername` is used. Right now there are three placeholders available: `$p$` (playername), `$t$` (current time) and `$d$` (current date).
 
 ## Description
 
-Additionally a `desc` tag is added to each command. It can be localized. This tag is used by the `ctc_defaults_list_all` command that prints all available commands to the chat. A command with a description looks like this:
+Additionally a `desc` tag is added to each command. It can be localized. This tag is used by the `ctc_defaults_list_all` command that prints all available commands to the chat. You can omitt this tag if you do not want to use a description. A command with a description looks like this:
 
 ```json
 "commands": {
@@ -199,6 +199,6 @@ CTC provides one special command which is `ctc_defaults_list_all`. It is useful 
 
 Additionally commands can be used to call other chatcommands. If you have a serverinfo line defined in a chatcommand called `info` and you want to print it everytime a chatcommand is issued, just add `ctc_info` to the `console` list.
 
-A neat sideeffect is that you are able to bind multiple console commands to one key by grouping them to a chatcommand (see the first example of this chapter). Now you can bind the new gorupcommand to a key using `bind` or (in case you are using TTT2) use [Easy Custom Bindings](https://steamcommunity.com/sharedfiles/filedetails/?id=1673119444) in combination with the TTT2 binding system.
+A neat sideeffect is that you are able to bind multiple console commands to one key by grouping them to a chatcommand (see the first example of this chapter). Now you can bind the new groupcommand to a key using `bind` or (in case you are using TTT2) use [Easy Custom Bindings](https://steamcommunity.com/sharedfiles/filedetails/?id=1673119444) in combination with the TTT2 binding system.
 
 For a full example, check out the default generated command file in `garrysmod/data/ctc/commands.txt`.
