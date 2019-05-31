@@ -2,7 +2,7 @@
 
 A small addon that makes it easy for server owners to configure chat commands. Each defined command registers a chat command and a console command. Once executed, chat messages can be printed to the player chat or further commands can be automatically executed. Additionally multiple languages, variables, placeholders and colors are supported.
 
-**Important note:** Make sure to use the right texteditor. After editing the json file with the windows text editor, garrys mod is unable to parse the json file. Using notepad++ solves this problem.
+**Important note:** Make sure to use the right texteditor. After editing the json file with the windows text editor, garrys mod is unable to parse the json file. Using notepad++ solves this problem. [See in this issue!](https://github.com/Facepunch/garrysmod-issues/issues/3869)
 
 ## Setup
 
@@ -99,7 +99,7 @@ After such a string variable is defined, it can be used inside multiple commands
 }
 ```
 
-In the third line of this chat message tweo colors, a placeholer `$p$` and a variable `cooldudes` is used. Right now there are three placeholders available: `$p$` (playername), `$s$` (servername/hostname), `$t$` (current time) and `$d$` (current date).
+In the third line of this chat message tweo colors, a placeholer `$p$` and a variable `cooldudes` is used. Right now there are four placeholders available: `$p$` (playername), `$s$` (servername/hostname), `$t$` (current time) and `$d$` (current date).
 
 ## Description
 
