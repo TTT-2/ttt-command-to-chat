@@ -81,6 +81,9 @@ if CLIENT then
     hook.Add('OnPlayerChat', 'CTC_Player_Chat', function(player, text, teamOnly, playerIsDead)
         if CTC == nil then return end
 
+        -- only run the possible command when its the correct player
+        if ply != LocalPlayer() then return end
+
         local prefix_len = CTC.settings.prefix:len()
 
         -- line starts not with prefix, therefore this is no command
