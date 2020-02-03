@@ -78,7 +78,7 @@ if CLIENT then
         if CTC.settings.prefix == nil then CTC.settings.prefix = '!' end
     end)
 
-    hook.Add('OnPlayerChat', 'CTC_Player_Chat', function(player, text, teamOnly, playerIsDead)
+    hook.Add('OnPlayerChat', 'CTC_Player_Chat', function(ply, text, teamOnly, playerIsDead)
         if CTC == nil then return end
 
         -- only run the possible command when its the correct player
