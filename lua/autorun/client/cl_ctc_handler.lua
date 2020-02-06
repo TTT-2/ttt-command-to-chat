@@ -103,7 +103,7 @@ end)
 hook.Add("OnPlayerChat", "CTC_Player_Chat", function(ply, text, teamOnly, playerIsDead)
 	if not CTC.data then return end
 
-	local command = CTC:PrepareCommand(text)
+	local command, args = CTC:PrepareCommand(text)
 
 	-- only run the possible command when its the correct player
 	if ply ~= LocalPlayer() then return true end
@@ -113,7 +113,7 @@ hook.Add("OnPlayerChat", "CTC_Player_Chat", function(ply, text, teamOnly, player
 	-- command is valid --> execute
 	chat.AddText(CTC.data.variables.colors["ctc_default"], ">> ", CTC.data.variables.colors["ctc_highlight"], text)
 
-	CTC:RunFirst(command)
+	CTC:RunFirst(command, args)
 
 	return true -- prevent issued command from beeing printed to chat
 end)
@@ -121,28 +121,33 @@ end)
 function CTC:PrepareCommand(text)
 	local prefix_len = self.data.settings.prefix:len()
 
+	local text_exp = string.Explode(" ", text)
+
 	-- line starts not with prefix, therefore this is no command
-	if text:sub(1, prefix_len) ~= self.data.settings.prefix then
+	if text_exp[1]:sub(1, prefix_len) ~= self.data.settings.prefix then
 		return false
 	end
 
-	local command = text:sub(prefix_len + 1)
+	local command = text_exp[1]:sub(prefix_len + 1)
 
 	-- command is not found inside the data table
 	if not self.data.commands[command] then
 		return false
 	end
 
-	return command
+	-- remove the first table entry (the command)
+	table.remove(text_exp, 1)
+
+	return command, text_exp
 end
 
-function CTC:RunFirst(command)
+function CTC:RunFirst(command, args)
 	if self.data.settings.run_first == "console" then
-		self:RunCommand(command)
+		self:RunCommand(command, args)
 		self:PrintChat(command)
 	else
 		self:PrintChat(command)
-		self:RunCommand(command)
+		self:RunCommand(command, args)
 	end
 end
 
@@ -204,10 +209,10 @@ function CTC:RunCommand(command)
 	end
 end
 
-function CTC:Command(command)
+function CTC:Command(command, args)
 	-- command is not found inside the data table
 	if not self.data.commands[command] then return end
 
 	-- command is valid --> execute
-	self:RunFirst(command)
+	self:RunFirst(command, unpack(args))
 end
