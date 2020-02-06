@@ -1,18 +1,21 @@
-CTC = {}
+CTC = {
+	data = {}
+}
 
 -- server sends command data to client
 net.Receive("ttt_ctc_send_data", function(len)
 	local data = net.ReadString()
 
-	CTC = util.JSONToTable(data)
+	CTC.data = util.JSONToTable(data)
 
-	if CTC == nil then
+	if not CTC.data then
 		Error("[CTC ERROR] Syntax of command file is not correct!")
+
 		return
 	end
 
 	-- add to language
-	for lang_id, lang_tbl in pairs(CTC.text) do
+	for lang_id, lang_tbl in pairs(CTC.data.text) do
 		for sub, lang in pairs(lang_tbl) do
 			LANG.AddToLanguage(lang_id, sub, lang)
 		end
@@ -21,9 +24,9 @@ net.Receive("ttt_ctc_send_data", function(len)
 	-- preprocess colors
 	local found_default, found_highlight = false, false
 
-	if CTC.variables ~= nil and CTC.variables.colors ~= nil then
-		for name, color_tbl in pairs(CTC.variables.colors) do
-			CTC.variables.colors[name] = Color(
+	if CTC.data.variables and CTC.data.variables.colors then
+		for name, color_tbl in pairs(CTC.data.variables.colors) do
+			CTC.data.variables.colors[name] = Color(
 				color_tbl[1] or 255,
 				color_tbl[2] or 255,
 				color_tbl[3] or 255,
@@ -41,23 +44,23 @@ net.Receive("ttt_ctc_send_data", function(len)
 	end
 
 	-- make sure the two default colors are always set
-	CTC.variables = CTC.variables or {}
-	CTC.variables.colors = CTC.variables.colors or {}
+	CTC.data.variables = CTC.data.variables or {}
+	CTC.data.variables.colors = CTC.data.variables.colors or {}
 
 	if not found_default then
-		CTC.variables.colors["ctc_default"] = Color(151, 211, 255, 255)
+		CTC.data.variables.colors["ctc_default"] = Color(151, 211, 255, 255)
 	end
 
 	if not found_highlight then
-		CTC.variables.colors["ctc_highlight"] = Color(215, 240, 240, 255)
+		CTC.data.variables.colors["ctc_highlight"] = Color(215, 240, 240, 255)
 	end
 
 	-- register commands
-	for name, _ in pairs(CTC.commands) do
+	for name, _ in pairs(CTC.data.commands) do
 		concommand.Add("ctc_" .. name, function(ply, cmd, args)
 			if ply ~= LocalPlayer() then return end
 
-			CTC_Command(name)
+			CTC:Command(name)
 		end)
 	end
 
@@ -65,10 +68,10 @@ net.Receive("ttt_ctc_send_data", function(len)
 	concommand.Add("ctc_defaults_list_all", function(ply, cmd, args)
 		if ply ~= LocalPlayer() then return end
 
-		for name, command_tbl in pairs(CTC.commands) do
+		for name, command_tbl in pairs(CTC.data.commands) do
 			local translated = ""
 
-			if command_tbl.desc ~= nil and command_tbl.desc.text ~= nil then
+			if command_tbl.desc and command_tbl.desc.text then
 				if command_tbl.desc.localized == false then
 					translated = command_tbl.desc.text
 				else
@@ -77,9 +80,9 @@ net.Receive("ttt_ctc_send_data", function(len)
 			end
 
 			local line_tbl = {
-				CTC.variables.colors["ctc_highlight"],
-				CTC.settings.prefix .. name,
-				CTC.variables.colors["ctc_default"],
+				CTC.data.variables.colors["ctc_highlight"],
+				CTC.data.settings.prefix .. name,
+				CTC.data.variables.colors["ctc_default"],
 				": " .. translated
 			}
 
@@ -88,60 +91,73 @@ net.Receive("ttt_ctc_send_data", function(len)
 	end)
 
 	-- make sure prefix is set
-	if not CTC.settings then
-		CTC.settings = {}
+	if not CTC.data.settings then
+		CTC.data.settings = {}
 	end
 
-	if not CTC.settings.prefix then
-		CTC.settings.prefix = "!"
+	if not CTC.data.settings.prefix then
+		CTC.data.settings.prefix = "!"
 	end
 end)
 
 hook.Add("OnPlayerChat", "CTC_Player_Chat", function(ply, text, teamOnly, playerIsDead)
-	if not CTC then return end
+	if not CTC.data then return end
+
+	local command = CTC:PrepareCommand(text)
 
 	-- only run the possible command when its the correct player
-	if ply ~= LocalPlayer() then return end
+	if ply ~= LocalPlayer() then return true end
 
-	local prefix_len = CTC.settings.prefix:len()
-
-	-- line starts not with prefix, therefore this is no command
-	if text:sub(1, prefix_len) ~= CTC.settings.prefix then return end
-
-	local command = text:sub(prefix_len + 1)
-
-	-- command is not found inside the data table
-	if not CTC.commands[command] then return end
+	if not command then return end
 
 	-- command is valid --> execute
-	chat.AddText(CTC.variables.colors["ctc_default"], ">> ", CTC.variables.colors["ctc_highlight"], text)
-	CTC_RunFirst(command)
+	chat.AddText(CTC.data.variables.colors["ctc_default"], ">> ", CTC.data.variables.colors["ctc_highlight"], text)
+
+	CTC:RunFirst(command)
 
 	return true -- prevent issued command from beeing printed to chat
 end)
 
-function CTC_RunFirst(command)
-	if CTC.settings.run_first == "console" then
-		CTC_Run_Command(command)
-		CTC_PrintChat(command)
+function CTC:PrepareCommand(text)
+	local prefix_len = self.data.settings.prefix:len()
+
+	-- line starts not with prefix, therefore this is no command
+	if text:sub(1, prefix_len) ~= self.data.settings.prefix then
+		return false
+	end
+
+	local command = text:sub(prefix_len + 1)
+
+	-- command is not found inside the data table
+	if not self.data.commands[command] then
+		return false
+	end
+
+	return command
+end
+
+function CTC:RunFirst(command)
+	if self.data.settings.run_first == "console" then
+		self:RunCommand(command)
+		self:PrintChat(command)
 	else
-		CTC_PrintChat(command)
-		CTC_Run_Command(command)
+		self:PrintChat(command)
+		self:RunCommand(command)
 	end
 end
 
-function CTC_PrintChat(command)
+function CTC:PrintChat(command)
 	-- stop if no chat prints are needed
-	if not CTC.commands[command].chat then return end
+	if not self.data.commands[command].chat then return end
 
-	for _, line in ipairs(CTC.commands[command].chat) do
+	for _, line in ipairs(self.data.commands[command].chat) do
 		local print_string
 
 		-- translate if needed
-		if CTC.commands[command].localized == false then
+		if self.data.commands[command].localized == false then
 			print_string = line
 		else
-			print_string = LANG.GetParamTranslation(line, CTC.variables.strings or {})
+			print_string = LANG.GetParamTranslation(line, self.data.variables.strings or {})
 		end
 
 		-- replace special placeholders
@@ -168,9 +184,10 @@ function CTC_PrintChat(command)
 
 		-- handle colors
 		local print_string_ex_color = string.Explode("%", print_string)
+
 		for k, v in ipairs(print_string_ex_color) do
-			if CTC.variables.colors[v] then
-				print_string_ex_color[k] = CTC.variables.colors[v]
+			if self.data.variables.colors[v] then
+				print_string_ex_color[k] = self.data.variables.colors[v]
 			end
 		end
 
@@ -178,19 +195,19 @@ function CTC_PrintChat(command)
 	end
 end
 
-function CTC_Run_Command(command)
+function CTC:RunCommand(command)
 	-- stop if no commands are needed
-	if not CTC.commands[command].console then return end
+	if not self.data.commands[command].console then return end
 
-	for _, line in ipairs(CTC.commands[command].console) do
+	for _, line in ipairs(self.data.commands[command].console) do
 		RunConsoleCommand(line)
 	end
 end
 
-function CTC_Command(command)
+function CTC:Command(command)
 	-- command is not found inside the data table
-	if not CTC.commands[command] then return end
+	if not self.data.commands[command] then return end
 
 	-- command is valid --> execute
-	CTC_RunFirst(command)
+	self:RunFirst(command)
 end

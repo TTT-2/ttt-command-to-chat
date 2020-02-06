@@ -1,4 +1,6 @@
-CTC_DEFAULT = {
+-- gmod does not allow us to put json files into addons; therefore this json file is stored in a lua file
+
+CTC._default = {
 	settings = {
 		prefix = "!",
 		run_first = "chat"
