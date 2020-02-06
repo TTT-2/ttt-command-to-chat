@@ -175,7 +175,7 @@ Additionally to chatprints, commands can be executed. This can be used to bind m
 }
 ```
 
-Of course this can be combined with chat prints.
+Of course this can be combined with chat prints. Arguments after the command (`!commands 10 20`) will be simply passed to their respective command. In the given example `xgui 10 20` and `shopeditor 10 20` will be run.
 
 CTC provides one special command which is `ctc_defaults_list_all`. It is useful if you want to implement a chat command that prints all available chat commands, because it prints all commands in combination with the description. A help command without localizations would look like this:
 
@@ -201,6 +201,6 @@ CTC provides one special command which is `ctc_defaults_list_all`. It is useful 
 
 Additionally commands can be used to call other chatcommands. If you have a serverinfo line defined in a chatcommand called `info` and you want to print it everytime a chatcommand is issued, just add `ctc_info` to the `console` list.
 
-A neat sideeffect is that you are able to bind multiple console commands to one key by grouping them to a chatcommand (see the first example of this chapter). Now you can bind the new groupcommand to a key using `bind` or (in case you are using TTT2) use [Easy Custom Bindings](https://steamcommunity.com/sharedfiles/filedetails/?id=1673119444) in combination with the TTT2 binding system.
+A neat side effect is that you are able to bind multiple console commands to one key by grouping them to a chatcommand (see the first example of this chapter). Now you can bind the new groupcommand to a key using `bind` or (in case you are using TTT2) use [Easy Custom Bindings](https://steamcommunity.com/sharedfiles/filedetails/?id=1673119444) in combination with the TTT2 binding system.
 
 For a full example, check out the default generated command file in `garrysmod/data/ctc/commands.txt`.
