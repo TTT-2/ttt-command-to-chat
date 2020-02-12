@@ -1,0 +1,11 @@
+{
+	"title"		:	"Command to Chat",
+	"type"		:	"tool",
+    "tags"		:	["build"],
+    "ignore"    : [
+        ".git/*",
+        ".gitignore",
+        "README.md",
+		"ttt_ctc.jpg"
+    ]
+}

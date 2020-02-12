@@ -1,4 +1,4 @@
-CTC = {
+CTC = CTC or {
 	data = {}
 }
 
@@ -106,7 +106,7 @@ hook.Add("OnPlayerChat", "CTC_Player_Chat", function(ply, text, teamOnly, player
 	local command, args = CTC:PrepareCommand(text)
 
 	-- only run the possible command when its the correct player
-	if ply ~= LocalPlayer() then return true end
+	if ply ~= LocalPlayer() then return end
 
 	if not command then return end
 

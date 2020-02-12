@@ -1,6 +1,6 @@
 util.AddNetworkString("ttt_ctc_send_data")
 
-CTC = {
+CTC = CTC or {
 	data = {},
 	_string = "",
 	_default = {}
