@@ -177,18 +177,18 @@ Additionally to chatprints, commands can be executed. This can be used to bind m
 
 Of course this can be combined with chat prints. Arguments after the command (`!commands 10 20`) will be simply passed to their respective command. In the given example `xgui 10 20` and `shopeditor 10 20` will be run.
 
-You might want to pre-define arguments for certain commands. To do this, make your command and arguments into an array of strings. The following example will run `cl_drawhud 1`:
+You might want to pre-define arguments for certain commands. To do this, split your command and arguments into an array of two strings. The following example will run `example 1 2 3`:
 
 ```json
 "commands": {
-    "hud": {
+    "example": {
         "localized": false,
         "desc": {
             "localized": false,
-            "text": "re-enables the hud (does nothing if it isn't hidden)"
+            "text": "example"
         },
         "console": [
-            ["cl_drawhud", "1"]
+            ["example", "1 2 3"]
         ]
     }
 }
