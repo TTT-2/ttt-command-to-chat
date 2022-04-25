@@ -208,8 +208,8 @@ function CTC:RunCommand(command)
 		if type(line) == "string" then
 		RunConsoleCommand(line)
 		return end
-		local command = table.remove(line, 1)
-		RunConsoleCommand(command, unpack(line))
+		-- handle commands with arguments
+		RunConsoleCommand(line[1], unpack(line, 2))
 	end
 end
 
