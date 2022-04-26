@@ -208,6 +208,7 @@ function CTC:RunCommand(command)
 		if isstring(line) then
 		RunConsoleCommand(line)
 		return end
+		
 		-- handle commands with arguments
 		RunConsoleCommand(line[1], unpack(line, 2))
 	end
