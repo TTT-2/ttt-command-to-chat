@@ -205,7 +205,7 @@ function CTC:RunCommand(command)
 	if not self.data.commands[command].console then return end
 
 	for _, line in ipairs(self.data.commands[command].console) do
-		if type(line) == "string" then
+		if isstring(line) then
 		RunConsoleCommand(line)
 		return end
 		-- handle commands with arguments
