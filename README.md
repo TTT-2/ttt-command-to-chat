@@ -177,6 +177,23 @@ Additionally to chatprints, commands can be executed. This can be used to bind m
 
 Of course this can be combined with chat prints. Arguments after the command (`!commands 10 20`) will be simply passed to their respective command. In the given example `xgui 10 20` and `shopeditor 10 20` will be run.
 
+You might want to pre-define arguments for certain commands. To do this, split your command and arguments into an array of strings. The following example will run `example 1 2 3`:
+
+```json
+"commands": {
+    "example": {
+        "localized": false,
+        "desc": {
+            "localized": false,
+            "text": "example"
+        },
+        "console": [
+            ["example", "1", "2", "3"]
+        ]
+    }
+}
+```
+
 CTC provides one special command which is `ctc_defaults_list_all`. It is useful if you want to implement a chat command that prints all available chat commands, because it prints all commands in combination with the description. A help command without localizations would look like this:
 
 ```json
