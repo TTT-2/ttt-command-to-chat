@@ -206,7 +206,7 @@ function CTC:RunCommand(command)
 
 	for _, line in ipairs(self.data.commands[command].console) do
 		if isstring(line) then
-		line = {line}
+			line = {line}
 		end
 		
 		RunConsoleCommand(line[1], unpack(line, 2))
